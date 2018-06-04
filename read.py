@@ -31,7 +31,7 @@ def okDownload():  # Functie aanmaken voor top 10 downloads
     return analyzedSuccess  # Geef totale list terug
 
 
-def failDownload():
+def failDownload():  # Functie aanmaken voor onbekende bestanden
     analyzedFail = []
     faildown = readFile(1)
     okdown = readFile(0)
