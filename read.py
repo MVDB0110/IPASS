@@ -32,53 +32,53 @@ def okDownload():  # Functie aanmaken voor top 10 downloads
 
 
 def failDownload():  # Functie aanmaken voor onbekende bestanden
-    analyzedFail = []
-    faildown = readFile(1)
-    okdown = readFile(0)
-    for linelog in faildown:
-        file = linelog.split(', ')[1]
-        x = 0
-        aanwezig = "0"
-        for failedLine in faildown:
-            if file in failedLine:
-                x += 1
-        for success in okdown:
-            if file in success:
-                aanwezig = "1"
-        if aanwezig == "0":
-            append = [x, file.replace('"', "")]
-            if append not in analyzedFail:
-                analyzedFail.append(append)
-    analyzedFail.sort(reverse=True)
-    return analyzedFail
+    analyzedFail = []  # Lijst aanmaken
+    faildown = readFile(1)  # Lijst van gefaalde downloads opvragen
+    okdown = readFile(0)  # Lijst van goede downloads opvragen
+    for linelog in faildown:  # Elke lijn lezen van gefaalde downloads
+        file = linelog.split(', ')[1]  # Haal de locatie van het bestand uit de lijn
+        x = 0  # Statement voor tellen
+        aanwezig = "0"  # Statement om lijn te identificeren in lijst van goede downloads
+        for failedLine in faildown:  # Optellen bij tel statement
+            if file in failedLine:  # Wanneer bestand voorkomt in de lijn
+                x += 1  # Een optellen
+        for success in okdown:  # Voor elke lijn in goede downloads
+            if file in success:  # Wanneer bestand voorkomt in lijst van goede downloads
+                aanwezig = "1"  # Zet aanwezigheid naar 1
+        if aanwezig == "0":  # Als bestandslocatie niet aanwezig is in goede downloads
+            append = [x, file.replace('"', "")]  # Voeg lijn toe aan onbekende bestanden lijst
+            if append not in analyzedFail:  # Als lijn niet aanwezig is
+                analyzedFail.append(append)  # Voeg lijn toe
+    analyzedFail.sort(reverse=True)  # Sorteer op aflopende downloads
+    return analyzedFail  # Geef lijst terug
 
 
-def formatText(mode):
-    if int(mode) == 0:
-        okDown = okDownload()[:10]
-        formattedText = "{:#^85s}\n".format("Top 10")
-        formattedText += "{:10} {}\n".format("Pogingen", "Bestand")
-        for line in okDown:
-            formattedText += "{:<10} {}\n".format(line[0], line[1])
-        print(formattedText)
+def formatText(mode):  # Functie aanmaken
+    if int(mode) == 0:  # Als modus voor top 10 is
+        okDown = okDownload()[:10]  # Vraag de eerste 10 van gelukte downloads op
+        formattedText = "{:#^85s}\n".format("Top 10")  # Tekst opmaken
+        formattedText += "{:10} {}\n".format("Pogingen", "Bestand")  # Tekst opmaken
+        for line in okDown:  # Voor elke gelukte downloads
+            formattedText += "{:<10} {}\n".format(line[0], line[1])  # Voeg opgemaakte tekst toe aan geheel
+        print(formattedText)  # Print uiteindelijke top 10
 
-    elif int(mode) == 1:
-        failDown = failDownload()
-        formattedText = "{:#^85s}\n".format("Niet gevonden bestanden")
-        formattedText += "{:10} {}\n".format("Pogingen", "Bestand")
-        for line in failDown:
-            formattedText += "{:<10} {}\n".format(line[0], line[1])
-        print(formattedText)
+    elif int(mode) == 1:  # Als modus voor gefaalde downloads is
+        failDown = failDownload()  # Vraag lijst op waarin onbekende bestanden staan
+        formattedText = "{:#^85s}\n".format("Niet gevonden bestanden")  # Tekst opmaken
+        formattedText += "{:10} {}\n".format("Pogingen", "Bestand")  # Tekst opmaken
+        for line in failDown:  # Voor elk onbekend bestand
+            formattedText += "{:<10} {}\n".format(line[0], line[1])  # Voeg opgemaakte tekst toe aan het geheel
+        print(formattedText)  # Print onbekende bestanden
 
 
-print("Selecteer de modus waarin het script opereert.\n")
-print("0 voor top 10 downloads.")
-print("1 voor mislukte downloads met het aantal keren dat het opgevraagd is.\n")
-mode = input("Geef modus op: ")
-modes = ('0', '1', '2')
-while mode not in modes:
-    mode = input("Geef modus op: ")
+print("Selecteer de modus waarin het script opereert.\n")  # Instructie tekst
+print("0 voor top 10 downloads.")  # Instructie tekst
+print("1 voor mislukte downloads met het aantal keren dat het opgevraagd is.\n")  # Instructie tekst
+mode = input("Geef modus op: ")  # Instructie tekst
+modes = ('0', '1')  # Tuple voor beschikbare modus
+while mode not in modes:  # Als modus niet beschikbaar is
+    mode = input("Geef modus op: ")  # Geef vraag opnieuw weer
 
-print("")
-formatText(int(mode))
-input("\nDruk op ENTER om af te sluiten.")
+print("")  # Opmaak
+formatText(int(mode))  # Voer script uit met opgegeven modus
+input("\nDruk op ENTER om af te sluiten.")  # Als script klaar is pas sluiten wanneer ENTER is ingedrukt
