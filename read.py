@@ -1,9 +1,9 @@
 import sys
+import configparser
 
 
 def readFile(mode):  # Functie aanmaken om bestand te lezen
     global log  # Globale variabele gebruiken in plaats van lokale
-    global afsluitbericht
     global filenotfounderror
     loglist = []  # List aanmaken waar straks inhoud aan gegeven wordt
     try:
@@ -19,14 +19,13 @@ def readFile(mode):  # Functie aanmaken om bestand te lezen
 
     except FileNotFoundError:
         print(filenotfounderror)
-        input(afsluitbericht)
+        input("Druk op ENTER om te sluiten.")
         sys.exit()
     return loglist  # Geef list terug
 
 
 def okDownload():  # Functie aanmaken voor top 10 downloads
     global indexerror
-    global afsluitbericht
     analyzedSuccess = []  # List aanmaken
     okdown = readFile(0)  # List van goede downloads opvragen
     try:
@@ -47,7 +46,7 @@ def okDownload():  # Functie aanmaken voor top 10 downloads
 
     except IndexError:
         print(indexerror)
-        input(afsluitbericht)
+        input("Druk op ENTER om te sluiten.")
         sys.exit()
 
     return analyzedSuccess  # Geef totale lijst terug
@@ -55,7 +54,6 @@ def okDownload():  # Functie aanmaken voor top 10 downloads
 
 def failDownload():  # Functie aanmaken voor onbekende bestanden
     global indexerror
-    global afsluitbericht
     analyzedFail = []  # Lijst aanmaken
     faildown = readFile(1)  # Lijst van gefaalde downloads opvragen
     okdown = readFile(0)  # Lijst van goede downloads opvragen
@@ -83,7 +81,7 @@ def failDownload():  # Functie aanmaken voor onbekende bestanden
 
     except IndexError:
         print(indexerror)
-        input(afsluitbericht)
+        input("Druk op ENTER om te sluiten.")
         sys.exit()
 
     return analyzedFail  # Geef lijst terug
@@ -108,12 +106,36 @@ def formatText(mode):  # Functie aanmaken
         print(formattedText)  # Print onbekende bestanden
 
 
-# Settings
-log = "l.log"  # Locatie van het bestand
-topdownloads = 10  # Aantal downloads die weergegeven moeten worden
-filenotfounderror = "ERROR_404: Dit bestand kan niet worden geanalyseerd. Controleer de naam van het bestand in het configuratiebestand\n"
-indexerror = "ERROR_400: Inhoud van het bestand kon niet worden geanalyseerd.\n"
-afsluitbericht = "Druk op ENTER om te stoppen."
+config = configparser.ConfigParser()
+config.read('conf.ini')
+try:
+    log = config['MAIN']['log']
+except:
+    print("In het configfile staat geen verwijzing naar een bestand.")
+    input("Druk op ENTER om te sluiten.")
+    sys.exit()
+
+try:
+    topdownloads = config['MAIN']['topdownloads']
+    topdownloads = int(topdownloads)
+except:
+    print("In het configfile staat geen getal voor hoe groot de top downloads moet zijn.")
+    input("Druk op ENTER om te sluiten.")
+    sys.exit()
+
+try:
+    filenotfounderror = config['TEXT']['filenotfounderror']
+except:
+    print("In het configuratiebestand staat geen string bij filenotfounderror")
+    input("Druk op ENTER om te sluiten.")
+    sys.exit()
+
+try:
+    indexerror = config['TEXT']['indexerror']
+except:
+    print("In het configuratiebestand staat geen string bij indexerror")
+    input("Druk op ENTER om te sluiten.")
+    sys.exit()
 
 
 print("Selecteer de modus waarin het script opereert.\n")  # Instructie tekst
