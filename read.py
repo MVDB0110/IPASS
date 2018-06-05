@@ -20,7 +20,7 @@ def readFile(mode):  # Functie aanmaken om bestand te lezen
     except FileNotFoundError:
         print(filenotfounderror)
         input("Druk op ENTER om te sluiten.")
-        sys.exit()
+        sys.exit()  # Afsluiten als het bestand niet gevonden kan worden
     return loglist  # Geef list terug
 
 
@@ -47,7 +47,7 @@ def okDownload():  # Functie aanmaken voor top 10 downloads
     except IndexError:
         print(indexerror)
         input("Druk op ENTER om te sluiten.")
-        sys.exit()
+        sys.exit()  # Afsluiten als de gelezen lijnen van het bestand niet kunnen geanalyseerd worden door dit script.
 
     return analyzedSuccess  # Geef totale lijst terug
 
@@ -82,7 +82,7 @@ def failDownload():  # Functie aanmaken voor onbekende bestanden
     except IndexError:
         print(indexerror)
         input("Druk op ENTER om te sluiten.")
-        sys.exit()
+        sys.exit()  # Afsluiten als de gelezen lijnen van het bestand niet kunnen geanalyseerd worden door dit script.
 
     return analyzedFail  # Geef lijst terug
 
@@ -106,36 +106,36 @@ def formatText(mode):  # Functie aanmaken
         print(formattedText)  # Print onbekende bestanden
 
 
-config = configparser.ConfigParser()
-config.read('conf.ini')
+config = configparser.ConfigParser()  # Configparser aanroepen
+config.read('conf.ini')  # Configparser configfile laten lezen
 try:
-    log = config['MAIN']['log']
+    log = config['MAIN']['log']  # Logfile locatie proberen op te vragen
 except:
     print("In het configfile staat geen verwijzing naar een bestand.")
     input("Druk op ENTER om te sluiten.")
-    sys.exit()
+    sys.exit()  # Afsluiten als logfile niet opgegeven is
 
 try:
-    topdownloads = config['MAIN']['topdownloads']
-    topdownloads = int(topdownloads)
+    topdownloads = config['MAIN']['topdownloads']  # Topdownloads proberen op te vragen
+    topdownloads = int(topdownloads)  # Proberen om te zetten naar getal
 except:
     print("In het configfile staat geen getal voor hoe groot de top downloads moet zijn.")
     input("Druk op ENTER om te sluiten.")
-    sys.exit()
+    sys.exit()  # Afsluiten als omzetten of opvragen niet lukt.
 
 try:
-    filenotfounderror = config['TEXT']['filenotfounderror']
+    filenotfounderror = config['TEXT']['filenotfounderror']  # File not found error tekst opvragen
 except:
     print("In het configuratiebestand staat geen string bij filenotfounderror")
     input("Druk op ENTER om te sluiten.")
-    sys.exit()
+    sys.exit()  # Afsluiten als tekst niet gevonden kan worden
 
 try:
-    indexerror = config['TEXT']['indexerror']
+    indexerror = config['TEXT']['indexerror']  # Index error tekst opvragen
 except:
     print("In het configuratiebestand staat geen string bij indexerror")
     input("Druk op ENTER om te sluiten.")
-    sys.exit()
+    sys.exit()  # Afsluiten als tekst niet gevonden kan worden
 
 
 print("Selecteer de modus waarin het script opereert.\n")  # Instructie tekst
