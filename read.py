@@ -1,5 +1,6 @@
-import sys
-import configparser
+import sys  # Importeer SYS voor het stoppen van het script wanneer configuratie niet klopt van het ini bestand
+import configparser  # Ini file parser
+import argparse  # Het doorgeven van command line arguments
 
 
 def readFile(mode):  # Functie aanmaken om bestand te lezen
@@ -138,15 +139,19 @@ except:
     sys.exit()  # Afsluiten als tekst niet gevonden kan worden
 
 
-print("Selecteer de modus waarin het script opereert.\n")  # Instructie tekst
-print("0 voor top " + str(topdownloads) + " downloads.")  # Instructie tekst
-print("1 voor mislukte downloads met het aantal keren dat het opgevraagd is.\n")  # Instructie tekst
-mode = input("Geef modus op: ")  # Instructie tekst
-modes = ('0', '1')  # Tuple voor beschikbare modus
+parser = argparse.ArgumentParser(description='Selecteer de modus waarin het script opereert.\n', add_help=True)  # Argumentparser aanroepen
+parser.add_argument('--topdownloads', action='store_true', default=True,
+                    dest='mode', help='Zie de topdownloads')  # Argument van topdownloads toevoegen
 
-while mode not in modes:  # Als modus niet beschikbaar is
-    mode = input("Geef modus op: ")  # Geef vraag opnieuw weer
+parser.add_argument('--ontbrekendebestanden', action='store_false', default=False,
+                    dest='mode', help='Zie de ontbrekende bestanden')  # Argument van ontbrekendebestanden toevoegen
 
-print("")  # Opmaak
-formatText(int(mode))  # Voer script uit met opgegeven modus
+args = parser.parse_args()  # Doorgegeven argumenten opvragen
+
+if args.mode == True:  # Als niets is doorgegeven of --topdownloads
+    formatText(0)  # Laat top downloads zien
+
+if args.mode == False:  # Als --ontbrekendebestanden is doorgegeven
+    formatText(1)  # Laat ontbrekende bestanden zien
+
 input("\nDruk op ENTER om af te sluiten.")  # Als script klaar is pas sluiten wanneer ENTER is ingedrukt
