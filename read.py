@@ -89,7 +89,7 @@ def failDownload():  # Functie aanmaken voor onbekende bestanden
 
 
 def formatText(mode):  # Functie aanmaken
-    if int(mode) == 0:  # Als modus voor top 10 is
+    if mode == True:  # Als modus voor top 10 is
         global topdownloads  # Globale variabele gebruiken in plaats van lokale
         okDown = okDownload()[:topdownloads]  # Vraag de eerste 10 van gelukte downloads op
         formattedText = "{:#^85s}\n".format("Top 10")  # Tekst opmaken
@@ -98,7 +98,7 @@ def formatText(mode):  # Functie aanmaken
             formattedText += "{:<10} {}\n".format(line[0], line[1])  # Voeg opgemaakte tekst toe aan geheel
         print(formattedText)  # Print uiteindelijke top 10
 
-    elif int(mode) == 1:  # Als modus voor gefaalde downloads is
+    elif mode == False:  # Als modus voor gefaalde downloads is
         failDown = failDownload()  # Vraag lijst op waarin onbekende bestanden staan
         formattedText = "{:#^85s}\n".format("Niet gevonden bestanden")  # Tekst opmaken
         formattedText += "{:10} {}\n".format("Pogingen", "Bestand")  # Tekst opmaken
@@ -146,12 +146,6 @@ parser.add_argument('--topdownloads', action='store_true', default=True,
 parser.add_argument('--ontbrekendebestanden', action='store_false', default=False,
                     dest='mode', help='Zie de ontbrekende bestanden')  # Argument van ontbrekendebestanden toevoegen
 
-args = parser.parse_args()  # Doorgegeven argumenten opvragen
-
-if args.mode == True:  # Als niets is doorgegeven of --topdownloads
-    formatText(0)  # Laat top downloads zien
-
-if args.mode == False:  # Als --ontbrekendebestanden is doorgegeven
-    formatText(1)  # Laat ontbrekende bestanden zien
+formatText(parser.parse_args().mode)
 
 input("\nDruk op ENTER om af te sluiten.")  # Als script klaar is pas sluiten wanneer ENTER is ingedrukt
