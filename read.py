@@ -146,6 +146,7 @@ parser.add_argument('--topdownloads', action='store_true', default=True,
 parser.add_argument('--ontbrekendebestanden', action='store_false', default=False,
                     dest='mode', help='Zie de ontbrekende bestanden')  # Argument van ontbrekendebestanden toevoegen
 
-formatText(parser.parse_args().mode)
+args = parser.parse_args()
+formatText(args.mode)
 
 input("\nDruk op ENTER om af te sluiten.")  # Als script klaar is pas sluiten wanneer ENTER is ingedrukt
